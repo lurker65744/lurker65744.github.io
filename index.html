@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lurker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    body {
+      height: 100vh;
+      background: radial-gradient(circle at top, #0f2027, #000);
+      color: #00ffcc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      background: url('https://grainy-gradients.vercel.app/noise.svg');
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #00ffcc44;
+      backdrop-filter: blur(12px);
+      padding: 40px 60px;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 0 40px #00ffcc22;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h1 {
+      font-size: 3rem;
+      letter-spacing: 4px;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+
+    .subtitle {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      opacity: 0.8;
+    }
+
+    .divider {
+      margin: 30px auto;
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #00ffcc, transparent);
+    }
+
+    .status {
+      font-size: 0.8rem;
+      color: #00ffaa;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+
+  <div class="card">
+    <h1>LURKER<span class="cursor">_</span></h1>
+    <div class="subtitle">access granted</div>
+    <div class="divider"></div>
+    <div class="status">[ online | stealth mode ]</div>
+  </div>
+
+  <!-- Música de fundo -->
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2022/10/03/audio_3c7c02d24d.mp3" type="audio/mpeg">
+  </audio>
+</body>
+</html>
