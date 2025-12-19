@@ -4,103 +4,237 @@
   <meta charset="UTF-8" />
   <title>Lurker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Share Tech Mono', monospace;
+    body{
+      height:100vh;
+      background:#050505;
+      overflow:hidden;
+      color:#eaeaea;
     }
 
-    body {
-      height: 100vh;
-      background: radial-gradient(circle at top, #0f2027, #000);
-      color: #00ffcc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+    /* grain */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:url('https://grainy-gradients.vercel.app/noise.svg');
+      opacity:.18;
+      pointer-events:none;
     }
 
-    .noise {
-      position: fixed;
-      inset: 0;
-      background: url('https://grainy-gradients.vercel.app/noise.svg');
-      opacity: 0.15;
-      pointer-events: none;
+    /* CLICK TO ENTER */
+    #enter{
+      position:fixed;
+      inset:0;
+      background:black;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:10;
+      cursor:pointer;
     }
 
-    .card {
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid #00ffcc44;
-      backdrop-filter: blur(12px);
-      padding: 40px 60px;
-      border-radius: 14px;
-      text-align: center;
-      box-shadow: 0 0 40px #00ffcc22;
-      animation: float 6s ease-in-out infinite;
+    #enter span{
+      font-size:20px;
+      letter-spacing:3px;
+      opacity:.7;
+      animation:blink 1.4s infinite;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    @keyframes blink{50%{opacity:.2}}
+
+    .bg{
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%) perspective(900px) rotateX(12deg);
+      width:92%;
+      max-width:1100px;
+      height:140px;
+      background:linear-gradient(90deg,#00ffee33,#00ffee66,#00ffee33);
+      border-radius:18px;
+      animation:pan 10s linear infinite;
     }
 
-    h1 {
-      font-size: 3rem;
-      letter-spacing: 4px;
-      text-shadow: 0 0 10px #00ffcc;
+    @keyframes pan{
+      0%{background-position:0%}
+      100%{background-position:200%}
     }
 
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      animation: blink 1s infinite;
+    .container{
+      position:relative;
+      z-index:2;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    @keyframes blink {
-      0%, 50%, 100% { opacity: 1; }
-      25%, 75% { opacity: 0; }
+    .card{
+      width:360px;
+      text-align:center;
     }
 
-    .subtitle {
-      margin-top: 20px;
-      font-size: 0.95rem;
-      opacity: 0.8;
+    .avatar{
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      margin:0 auto 12px;
+      background:#222 url('https://i.imgur.com/8QfQ8Zf.png') center/cover;
+      box-shadow:0 0 20px #000;
     }
 
-    .divider {
-      margin: 30px auto;
-      width: 60%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #00ffcc, transparent);
+    h1{
+      font-weight:600;
+      font-size:22px;
+      margin-bottom:6px;
+      letter-spacing:.5px;
     }
 
-    .status {
-      font-size: 0.8rem;
-      color: #00ffaa;
+    .location{
+      font-size:13px;
+      opacity:.6;
+      margin-bottom:18px;
     }
 
-    audio {
-      display: none;
+    .socials{
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      margin-bottom:36px;
+      font-size:18px;
+    }
+
+    .socials a{
+      color:#fff;
+      opacity:.75;
+      text-decoration:none;
+      transition:.2s;
+    }
+
+    .socials a:hover{opacity:1}
+
+    .player{
+      width:100%;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:12px;
+      opacity:.85;
+    }
+
+    .bar{
+      flex:1;
+      height:4px;
+      background:#333;
+      border-radius:10px;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+    }
+
+    .progress{
+      position:absolute;
+      left:0;
+      top:0;
+      height:100%;
+      width:0%;
+      background:#fff;
+      border-radius:10px;
+    }
+
+    .time{
+      min-width:42px;
+      text-align:right;
+    }
+
+    .views{
+      position:absolute;
+      top:22px;
+      right:28px;
+      font-size:12px;
+      opacity:.6;
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+
+    button{
+      background:none;
+      border:none;
+      color:#fff;
+      cursor:pointer;
+      opacity:.8;
+      font-size:14px;
     }
   </style>
 </head>
 <body>
-  <div class="noise"></div>
 
+<div id="enter"><span>CLICK TO ENTER</span></div>
+
+<div class="views">👁 18</div>
+<div class="bg"></div>
+
+<div class="container">
   <div class="card">
-    <h1>LURKER<span class="cursor">_</span></h1>
-    <div class="subtitle">access granted</div>
-    <div class="divider"></div>
-    <div class="status">[ online | stealth mode ]</div>
-  </div>
+    <div class="avatar"></div>
+    <h1>Lurker</h1>
+    <div class="location">📍 France • Portugal</div>
 
-  <!-- Música de fundo -->
-  <audio autoplay loop>
-    <source src="https://cdn.pixabay.com/audio/2022/10/03/audio_3c7c02d24d.mp3" type="audio/mpeg">
-  </audio>
+    <div class="socials">
+      <a href="#">◎</a>
+      <a href="#">𝕏</a>
+    </div>
+
+    <div class="player">
+      <div>counted out</div>
+      <div class="bar" id="bar"><div class="progress" id="progress"></div></div>
+      <button id="play">▶</button>
+      <div class="time" id="time">0:00</div>
+    </div>
+  </div>
+</div>
+
+<audio id="audio" src="https://cdn.pixabay.com/audio/2022/10/03/audio_3c7c02d24d.mp3"></audio>
+
+<script>
+  const enter=document.getElementById('enter')
+  const audio=document.getElementById('audio')
+  const play=document.getElementById('play')
+  const progress=document.getElementById('progress')
+  const bar=document.getElementById('bar')
+  const time=document.getElementById('time')
+
+  enter.onclick=()=>{
+    enter.style.display='none'
+    audio.play()
+    play.textContent='⏸'
+  }
+
+  play.onclick=()=>{
+    if(audio.paused){audio.play();play.textContent='⏸'}
+    else{audio.pause();play.textContent='▶'}
+  }
+
+  audio.ontimeupdate=()=>{
+    const p=(audio.currentTime/audio.duration)*100
+    progress.style.width=p+'%'
+    const m=Math.floor(audio.currentTime/60)
+    const s=Math.floor(audio.currentTime%60).toString().padStart(2,'0')
+    time.textContent=`${m}:${s}`
+  }
+
+  bar.onclick=e=>{
+    const rect=bar.getBoundingClientRect()
+    const pct=(e.clientX-rect.left)/rect.width
+    audio.currentTime=pct*audio.duration
+  }
+</script>
+
 </body>
 </html>
